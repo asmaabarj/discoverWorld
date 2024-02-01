@@ -89,18 +89,19 @@
                 <div class="mt-10">
                     <div class="grid sm:grid-cols-3 gap-4 items-center">
                         <div class="flex flex-col items-center text-center">
-                            <h5 class="font-bold text-xl mb-1">10</h5>
+                            <h5 class="font-bold text-xl mb-1">{{ $countUser }}</h5>
                             <p>active users</p>
                         </div>
                         <div class="flex flex-col items-center text-center">
-                            <h5 class="font-bold text-xl mb-1">890</h5>
+                            <h5 class="font-bold text-xl mb-1">{{ $countAdventure }}</h5>
                             <p>adventures</p>
                         </div>
                         <div class="flex flex-col items-center text-center">
-                            <h5 class="font-bold text-xl mb-1">250</h5>
+                            <h5 class="font-bold text-xl mb-1">{{ $uniqueDestinationsCount }}</h5>
                             <p>destinations</p>
                         </div>
                     </div>
+                    
                 </div>
             </div>
             <div

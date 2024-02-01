@@ -16,22 +16,30 @@ class AdventureController extends Controller
     {
         $user = auth()->user();
         $userAventures = $user->userAventures;
-    
+
         return view('profile', ['UserAventures' => $userAventures]);
     }
-    
-    
+
+
 
 
     public function index()
     {
         $aventures = Aventure::with('user', 'destination', 'images')->get();
         $destinations = Destination::all();
-    
-        return view('home', ['aventures' => $aventures, 'destinations' => $destinations]);
+        $uniqueDestinationsCount = Aventure::distinct('destination_id')->count();
+
+        $countUser = User::count();
+        $countAdventure = Aventure::count();
+
+        return view('home', [
+            'aventures' => $aventures, 'destinations' => $destinations, 'countUser' => $countUser,
+            'countAdventure' => $countAdventure,
+            'uniqueDestinationsCount' => $uniqueDestinationsCount
+        ]);
     }
-    
-    
+
+
     public function store(Request $request)
     {
         $request->validate([
@@ -43,7 +51,7 @@ class AdventureController extends Controller
 
         if (Auth::check()) {
             $user = Auth::user();
-        
+
             $adventure = Aventure::create([
                 'title' => $request->input('Title'),
                 'description' => $request->input('description'),
@@ -51,22 +59,20 @@ class AdventureController extends Controller
                 'user_id' => $user->id,
 
             ]);
-        
+
             if ($request->hasFile('image')) {
                 foreach ($request->file('image') as $image) {
-                    $path = $image->store('images','public'); 
-            
+                    $path = $image->store('images', 'public');
+
                     $adventure->images()->create([
                         'name' => $path,
                     ]);
                 }
-                
             }
-        
+
             return redirect('/profile');
         } else {
             return redirect('/login')->with('error', 'Please log in to add an adventure.');
         }
     }
 }
-

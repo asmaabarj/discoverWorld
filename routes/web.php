@@ -24,6 +24,7 @@ Route::get('/register', function () {
 })->name('register');
 
 Route::get('/home', function () {
+    
     return view('home');
 })->name('home');
 
