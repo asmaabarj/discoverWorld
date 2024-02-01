@@ -37,7 +37,7 @@ Route::get('/posts', function () {
 })->name('posts');
 
 
-Route::get('/home', [AdventureController::class, 'index'])->name('home');
+Route::get('/home', [AdventureController::class, 'index']);
 
 // Route::get('/home', function () {
 //     $destinations = Destination::all();

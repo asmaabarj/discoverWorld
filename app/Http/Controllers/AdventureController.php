@@ -4,18 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Image;
 use App\Models\Aventure;
+use App\Models\Destination;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdventureController extends Controller
 {
 
-     public function index()
+    public function index()
     {
         $aventures = Aventure::with('user', 'destination', 'images')->get();
-
-        return view('home', ['aventures' => $aventures]);
+        $destinations = Destination::all();
+    
+        return view('home', ['aventures' => $aventures, 'destinations' => $destinations]);
     }
+    
     
     public function store(Request $request)
     {

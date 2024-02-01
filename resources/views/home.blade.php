@@ -130,11 +130,11 @@
                     class="mt-10 px-4 py-2 w-[24rem] border-[1px] border-black rounded-[5px]">
                     @csrf
                     <label>Select your destination:</label>
-                    {{-- <select id="destination" name="destination_id" class="outline-none ">
+                    <select id="destination" name="destination_id" class="outline-none ">
                         @foreach ($destinations as $destination)
                             <option value="{{ $destination['id'] }}">{{ $destination['name'] }}</option>
                         @endforeach
-                    </select> --}}
+                    </select>
 
 
 
