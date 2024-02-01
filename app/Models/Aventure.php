@@ -25,6 +25,12 @@ class Aventure extends Model
     {
         return $this->belongsTo(Destination::class);
     }
+    public function UserDestination()
+    {
+        return $this->belongsTo(Destination::class, 'destination_id');
+    }
+
+   
 
   
 }

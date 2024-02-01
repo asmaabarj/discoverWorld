@@ -5,11 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Image;
 use App\Models\Aventure;
 use App\Models\Destination;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdventureController extends Controller
 {
+
+    public function getUserAventures()
+    {
+        $user = auth()->user();
+        $userAventures = $user->userAventures;
+    
+        return view('profile', ['UserAventures' => $userAventures]);
+    }
+    
+    
+
 
     public function index()
     {

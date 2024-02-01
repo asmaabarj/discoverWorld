@@ -27,9 +27,6 @@ Route::get('/home', function () {
     return view('home');
 })->name('home');
 
-Route::get('/profile', function () {
-    return view('profile');
-})->name('profile');
 
 Route::get('/posts', function () {
     $destinations = Destination::all();
@@ -40,15 +37,20 @@ Route::get('/posts', function () {
 Route::get('/home', [AdventureController::class, 'index']);
 
 // Route::get('/home', function () {
-//     $destinations = Destination::all();
-//     return view('home', ['destinations' => $destinations]);
-// })->name('home');
-
-
+    //     $destinations = Destination::all();
+    //     return view('home', ['destinations' => $destinations]);
+    // })->name('home');
+    
+    // Route::get('/profile', function () {
+    //     return view('profile');
+    // })->name('profile');
+    
 Route::post('/register', [UserController::class,'register']);
 Route::post('/logout', [UserController::class,'logout']);
 Route::post('/login', [UserController::class,'login']);
-Route::post('/profile', [AdventureController::class, 'store'])->name('adventure.store');
+Route::post('/Posts', [AdventureController::class, 'store']);
+Route::get('/profile', [AdventureController::class, 'getUserAventures'])->name('profile');
+
 
 
 

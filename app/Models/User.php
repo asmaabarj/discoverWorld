@@ -52,5 +52,8 @@ class User extends Authenticatable
         return $this->hasMany(Aventure::class);
     }
 
-
+    public function userAventures()
+    {
+        return $this->hasMany(Aventure::class, 'user_id')->with('destination', 'images');
+    }
 }
