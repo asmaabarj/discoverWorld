@@ -44,7 +44,7 @@ class AdventureController extends Controller
     {
         $request->validate([
             'Title' => 'required|string',
-            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
             'description' => 'required|string',
             'category' => 'string',
         ]);
