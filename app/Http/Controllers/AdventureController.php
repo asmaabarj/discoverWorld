@@ -23,22 +23,51 @@ class AdventureController extends Controller
 
 
 
-    public function index()
-    {
-        $aventures = Aventure::with('user', 'destination', 'images')->get();
-        $destinations = Destination::all();
-        $uniqueDestinationsCount = Aventure::distinct('destination_id')->count();
+  
 
+
+    public function showAdventure(Request $request)
+    {
+        $uniqueDestinationsCount = Aventure::distinct('destination_id')->count();
         $countUser = User::count();
         $countAdventure = Aventure::count();
-
+    
+        if ($request->isMethod('post')) {
+            $destinationId = $request->input('destinationId');
+    
+            $aventures = Aventure::with('destination')
+                ->when($destinationId, function ($query) use ($destinationId) {
+                    $query->whereHas('destination', function ($subquery) use ($destinationId) {
+                        $subquery->where('id', $destinationId);
+                    });
+                })
+                ->get();
+    
+       
+            $destinations = Destination::all();
+    
+            return view('home', [
+                'aventures' => $aventures,
+                'uniqueDestinationsCount' => $uniqueDestinationsCount,
+                'destinations' => $destinations,
+                'countUser' => $countUser,
+                'countAdventure' => $countAdventure
+            ]);
+        }
+    
+        $aventures = Aventure::with('user', 'destination', 'images')->get();
+        $destinations = Destination::all();
+      
         return view('home', [
-            'aventures' => $aventures, 'destinations' => $destinations, 'countUser' => $countUser,
+            'aventures' => $aventures,
+            'destinations' => $destinations,
+            'countUser' => $countUser,
             'countAdventure' => $countAdventure,
             'uniqueDestinationsCount' => $uniqueDestinationsCount
         ]);
     }
-
+    
+    
 
     public function store(Request $request)
     {

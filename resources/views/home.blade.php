@@ -127,20 +127,19 @@
                         class="px-3 mt-10 rounded text-sm tracking-wider font-medium outline-none border-[1px] border-[#333] text-black hover:bg-[#222] bg-transparent hover:text-white  transition-all duration-300 h-[2rem]">the
                         most old</button>
                 </div>
-                <form action="/home" method="post"
-                    class="mt-10 px-4 py-2 w-[24rem] border-[1px] border-black rounded-[5px]">
+                <div><form action="/home" method="get"><button><u>Show All</u></button></form></div>
+
+                <form action="/home" method="post" class="mt-10 px-4 py-2 w-[24rem] border-[1px] border-black rounded-[5px]">
                     @csrf
                     <label>Select your destination:</label>
-                    <select id="destination" name="destination_id" class="outline-none ">
+                    <select id="destination" name="destinationId" class="outline-none">
                         @foreach ($destinations as $destination)
                             <option value="{{ $destination['id'] }}">{{ $destination['name'] }}</option>
                         @endforeach
                     </select>
-
-
-
                     <button type="submit" class="ml-[1rem] bg-blue-100 px-2 py-1 rounded-[4px]">Search</button>
                 </form>
+                
             </div>
             <div class="grid grid-cols-1 w-[85%] gap-10 mt-16 max-md:max-w-lg mx-auto">
                 @foreach ($aventures as $aventure)

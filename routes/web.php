@@ -19,6 +19,8 @@ Route::get('/', function () {
     return view('index');
 })->name('login');
 
+
+
 Route::get('/register', function () {
     return view('welcome');
 })->name('register');
@@ -35,7 +37,6 @@ Route::get('/posts', function () {
 })->name('posts');
 
 
-Route::get('/home', [AdventureController::class, 'index']);
 
 // Route::get('/home', function () {
     //     $destinations = Destination::all();
@@ -49,8 +50,15 @@ Route::get('/home', [AdventureController::class, 'index']);
 Route::post('/register', [UserController::class,'register']);
 Route::post('/logout', [UserController::class,'logout']);
 Route::post('/login', [UserController::class,'login']);
-Route::post('/Posts', [AdventureController::class, 'store']);
+Route::post('/posts', [AdventureController::class, 'store']);
 Route::get('/profile', [AdventureController::class, 'getUserAventures'])->name('profile');
+// Use separate routes for 'get' and 'post' methods
+Route::post('/home', [AdventureController::class, 'showAdventure'])->name('home.post');
+Route::get('/home', [AdventureController::class, 'showAdventure'])->name('home.get');
+
+
+
+
 
 
 
