@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Image;
 use App\Models\Aventure;
 use App\Models\Destination;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class AdventureController extends Controller
 {
-
     public function getUserAventures()
     {
         $user = auth()->user();
@@ -20,35 +20,51 @@ class AdventureController extends Controller
         return view('profile', ['UserAventures' => $userAventures]);
     }
 
-
-
-
-
-
-
     public function showAdventure(Request $request)
     {
-        $uniqueDestinationsCount = Aventure::distinct('destination_id')->count();
-        $countUser = User::count();
-        $countAdventure = Aventure::count();
+        $uniqueDestinationsCountKey = 'unique_destinations_count';
+
+        $lastAventuresKey = 'last_aventures';
+
+        $uniqueDestinationsCount = Cache::remember($uniqueDestinationsCountKey, 60, function () {
+            return Aventure::distinct('destination_id')->count();
+        });
+
+        $countUser = Cache::remember('user_count', 60, function () {
+            return User::count();
+        });
+
+        $countAdventure = Cache::remember('adventure_count', 60, function () {
+            return Aventure::count();
+        });
 
         if ($request->isMethod('post')) {
             $destinationId = $request->input('destinationId');
+
             if (isset($destinationId)) {
-                $filtredaventure = Aventure::with('destination')
-                    ->when($destinationId, function ($query) use ($destinationId) {
-                        $query->whereHas('destination', function ($subquery) use ($destinationId) {
-                            $subquery->where('id', $destinationId);
-                        });
-                    })
-                    ->get();
+                $filteredAventureKey = 'filtered_aventures_' . $destinationId;
+
+                $filtredAventures = Cache::remember($filteredAventureKey, 60, function () use ($destinationId) {
+                    return Aventure::with('destination')
+                        ->when($destinationId, function ($query) use ($destinationId) {
+                            $query->whereHas('destination', function ($subquery) use ($destinationId) {
+                                $subquery->where('id', $destinationId);
+                            });
+                        })
+                        ->get();
+                });
             } else {
-                $lastaventures = Aventure::with('user', 'destination', 'images')->orderBy('created_at', 'desc')->get();
+                $lastAventures = Cache::remember($lastAventuresKey, 60, function () {
+                    return Aventure::with('user', 'destination', 'images')->orderBy('created_at', 'desc')->get();
+                });
             }
 
-            $aventures = isset($filtredaventure) ? $filtredaventure : (isset($lastaventures) ? $lastaventures : 'default');
+            $aventures = isset($filtredAventures) ? $filtredAventures : (isset($lastAventures) ? $lastAventures : 'default');
 
-            $destinations = Destination::all();
+            $destinations = Cache::remember('destinations', 60, function () {
+                return Destination::all();
+            });
+
             return view('home', [
                 'aventures' => $aventures,
                 'uniqueDestinationsCount' => $uniqueDestinationsCount,
@@ -58,10 +74,13 @@ class AdventureController extends Controller
             ]);
         }
 
-        $aventures = Aventure::with('user', 'destination', 'images')->get();
+        $aventures = Cache::remember('all_aventures', 60, function () {
+            return Aventure::with('user', 'destination', 'images')->get();
+        });
 
-
-        $destinations = Destination::all();
+        $destinations = Cache::remember('destinations', 60, function () {
+            return Destination::all();
+        });
 
         return view('home', [
             'aventures' => $aventures,
@@ -71,6 +90,8 @@ class AdventureController extends Controller
             'uniqueDestinationsCount' => $uniqueDestinationsCount
         ]);
     }
+
+   
 
 
 
