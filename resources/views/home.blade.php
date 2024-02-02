@@ -121,28 +121,30 @@
             </div>
             <div class="flex justify-between">
             <div class="flex justify-between gap-2">
-                <form action="/home" method="get">
+                <form action="/home" method="get"> 
+                    @csrf
+
                     <div class="flex gap-2">
                         <input type="hidden" name="orderBy" value="desc">
-                        <button type="submit" class="px-3 mt-10 rounded text-sm tracking-wider font-medium outline-none border-[1px] border-[#333] text-black hover:bg-[#222] bg-transparent hover:text-white transition-all duration-300 h-[2rem]">
-                            the most recent
-                        </button>
-                    </div>
-                </form>
-            
-                <form action="/home" method="get">
-                    <div class="flex gap-2">
-                        <input type="hidden" name="orderBy" value="asc">
                         <button type="submit" class="px-3 mt-10 rounded text-sm tracking-wider font-medium outline-none border-[1px] border-[#333] text-black hover:bg-[#222] bg-transparent hover:text-white transition-all duration-300 h-[2rem]">
                             the most old
                         </button>
                     </div>
                 </form>
-            </div>
             
-            
-                <div class="mt-10"><form action="/home" method="get"><button><u>Show All</u></button></form></div>
+                <form action="/home" method="post">
+                    @csrf
 
+                    <div class="flex gap-2">
+                        <input type="hidden" name="orderBy" value="asc">
+                        <button type="submit" class="px-3 mt-10 rounded text-sm tracking-wider font-medium outline-none border-[1px] border-[#333] text-black hover:bg-[#222] bg-transparent hover:text-white transition-all duration-300 h-[2rem]">
+                            the most recent
+                        </button>
+                    </div>
+                </form>
+            </div>
+ 
+            
                 <form action="/home" method="post" class="mt-10 px-4 py-2 w-[24rem] border-[1px] border-black rounded-[5px]">
                     @csrf
                     <label>Select your destination:</label>

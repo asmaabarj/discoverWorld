@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Image;
 use App\Models\Aventure;
 use App\Models\Destination;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class AdventureController extends Controller
 {
+
     public function getUserAventures()
     {
         $user = auth()->user();
@@ -19,40 +20,35 @@ class AdventureController extends Controller
         return view('profile', ['UserAventures' => $userAventures]);
     }
 
+
+
+
+
+
+
     public function showAdventure(Request $request)
     {
-        $uniqueDestinationsCount = Cache::remember('unique_destinations_count', 60, function () {
-            return Aventure::distinct('destination_id')->count();
-        });
+        $uniqueDestinationsCount = Aventure::distinct('destination_id')->count();
+        $countUser = User::count();
+        $countAdventure = Aventure::count();
 
-        $countUser = Cache::remember('user_count', 60, function () {
-            return User::count();
-        });
-
-        $countAdventure = Cache::remember('adventure_count', 60, function () {
-            return Aventure::count();
-        });
-
-        if ($request->isMethod('get')) {
+        if ($request->isMethod('post')) {
             $destinationId = $request->input('destinationId');
-            $orderDirection = $request->input('orderBy', 'desc'); 
-
-            $cacheKey = 'adventures_' . $destinationId . '_' . $orderDirection;
-            $aventures = Cache::remember($cacheKey, 60, function () use ($destinationId, $orderDirection) {
-                return Aventure::with('destination')
+            if (isset($destinationId)) {
+                $filtredaventure = Aventure::with('destination')
                     ->when($destinationId, function ($query) use ($destinationId) {
                         $query->whereHas('destination', function ($subquery) use ($destinationId) {
                             $subquery->where('id', $destinationId);
                         });
                     })
-                    ->orderBy('created_at', $orderDirection)
                     ->get();
-            });
+            } else {
+                $lastaventures = Aventure::with('user', 'destination', 'images')->orderBy('created_at', 'desc')->get();
+            }
 
-            $destinations = Cache::remember('destinations', 60, function () {
-                return Destination::all();
-            });
+            $aventures = isset($filtredaventure) ? $filtredaventure : (isset($lastaventures) ? $lastaventures : 'default');
 
+            $destinations = Destination::all();
             return view('home', [
                 'aventures' => $aventures,
                 'uniqueDestinationsCount' => $uniqueDestinationsCount,
@@ -63,9 +59,9 @@ class AdventureController extends Controller
         }
 
         $aventures = Aventure::with('user', 'destination', 'images')->get();
-        $destinations = Cache::remember('destinations', 60, function () {
-            return Destination::all();
-        });
+
+
+        $destinations = Destination::all();
 
         return view('home', [
             'aventures' => $aventures,
@@ -75,6 +71,8 @@ class AdventureController extends Controller
             'uniqueDestinationsCount' => $uniqueDestinationsCount
         ]);
     }
+
+
 
     public function store(Request $request)
     {
@@ -93,6 +91,7 @@ class AdventureController extends Controller
                 'description' => $request->input('description'),
                 'destination_id' => $request->input('destination_id'),
                 'user_id' => $user->id,
+
             ]);
 
             if ($request->hasFile('image')) {

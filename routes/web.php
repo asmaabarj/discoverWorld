@@ -50,7 +50,7 @@ Route::get('/posts', function () {
 Route::post('/register', [UserController::class,'register']);
 Route::post('/logout', [UserController::class,'logout']);
 Route::post('/login', [UserController::class,'login']);
-Route::post('/posts', [AdventureController::class, 'store']);
+Route::post('/posts', [AdventureController::class, 'store'])->name('posts.store');
 Route::get('/profile', [AdventureController::class, 'getUserAventures'])->name('profile');
 Route::post('/home', [AdventureController::class, 'showAdventure'])->name('home.post');
 Route::get('/home', [AdventureController::class, 'showAdventure'])->name('home.get');
