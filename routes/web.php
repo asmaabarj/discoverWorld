@@ -43,7 +43,7 @@ Route::get('/posts', function () {
     //     return view('home', ['destinations' => $destinations]);
     // })->name('home');
     
-    // Route::get('/profile', function () {
+    // Route::POST('/profile', function () {
     //     return view('profile');
     // })->name('profile');
     

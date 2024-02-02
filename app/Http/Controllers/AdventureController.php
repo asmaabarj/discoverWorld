@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Image;
 use App\Models\Aventure;
 use App\Models\Destination;
 use Illuminate\Http\Request;
@@ -34,17 +33,19 @@ class AdventureController extends Controller
             return Aventure::count();
         });
 
-        if ($request->isMethod('post')) {
+        if ($request->isMethod('get')) {
             $destinationId = $request->input('destinationId');
+            $orderDirection = $request->input('orderBy', 'desc'); // Default to desc
 
-            $cacheKey = 'adventures_' . $destinationId;
-            $aventures = Cache::remember($cacheKey, 60, function () use ($destinationId) {
+            $cacheKey = 'adventures_' . $destinationId . '_' . $orderDirection;
+            $aventures = Cache::remember($cacheKey, 60, function () use ($destinationId, $orderDirection) {
                 return Aventure::with('destination')
                     ->when($destinationId, function ($query) use ($destinationId) {
                         $query->whereHas('destination', function ($subquery) use ($destinationId) {
                             $subquery->where('id', $destinationId);
                         });
                     })
+                    ->orderBy('created_at', $orderDirection)
                     ->get();
             });
 

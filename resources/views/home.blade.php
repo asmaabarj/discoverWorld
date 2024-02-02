@@ -119,16 +119,28 @@
                     class="text-2xl font-extrabold text-[#333] inline-block relative after:absolute after:h-1 after:left-0 after:right-0 after:-bottom-4 after:mx-auto after:bg-pink-300 after:rounded-full">
                     POPULAR ADVENTURES</h2>
             </div>
-            <form action="/home" method="post">
+            
             <div class="flex justify-between">
-                <div class="flex gap-2"><button type="button"
-                        class="px-3  mt-10 rounded  text-sm tracking-wider font-medium outline-none border-[1px] border-[#333] text-black  hover:bg-[#222] bg-transparent hover:text-white  transition-all duration-300 h-[2rem]">the
-                        most recent</button>
-                    <button type="button"
-                        class="px-3 mt-10 rounded text-sm tracking-wider font-medium outline-none border-[1px] border-[#333] text-black hover:bg-[#222] bg-transparent hover:text-white  transition-all duration-300 h-[2rem]">the
-                        most old</button>
-                </div>
-            </form>
+                <form action="/home" method="get">
+                    <div class="flex gap-2">
+                        <input type="hidden" name="orderBy" value="desc">
+                        <button type="submit" class="px-3 mt-10 rounded text-sm tracking-wider font-medium outline-none border-[1px] border-[#333] text-black hover:bg-[#222] bg-transparent hover:text-white transition-all duration-300 h-[2rem]">
+                            the most recent
+                        </button>
+                    </div>
+                </form>
+            
+                <form action="/home" method="get">
+                    <div class="flex gap-2">
+                        <input type="hidden" name="orderBy" value="asc">
+                        <button type="submit" class="px-3 mt-10 rounded text-sm tracking-wider font-medium outline-none border-[1px] border-[#333] text-black hover:bg-[#222] bg-transparent hover:text-white transition-all duration-300 h-[2rem]">
+                            the most old
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            
                 <div><form action="/home" method="get"><button><u>Show All</u></button></form></div>
 
                 <form action="/home" method="post" class="mt-10 px-4 py-2 w-[24rem] border-[1px] border-black rounded-[5px]">

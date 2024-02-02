@@ -9,7 +9,7 @@
 </head>
 <body class="bg-gradient-to-r from-blue-300 to-blue-50">
     <body class="bg-gradient-to-r from-gray-950 to-gray-50">
-        <form  action="/Posts" method="post" class=" my-2  bg-blue-50 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-[10px] py-6 w-[70%] mx-auto" enctype="multipart/form-data">
+        <form  action="/profile" method="post" class=" my-2  bg-blue-50 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-[10px] py-6 w-[70%] mx-auto" enctype="multipart/form-data">
        @csrf
                 <div class="grid md:grid-cols-2 md:gap-6   lg:mx-10">
                     <div class="mb-5">
