@@ -119,8 +119,8 @@
                     class="text-2xl font-extrabold text-[#333] inline-block relative after:absolute after:h-1 after:left-0 after:right-0 after:-bottom-4 after:mx-auto after:bg-pink-300 after:rounded-full">
                     POPULAR ADVENTURES</h2>
             </div>
-            
             <div class="flex justify-between">
+            <div class="flex justify-between gap-2">
                 <form action="/home" method="get">
                     <div class="flex gap-2">
                         <input type="hidden" name="orderBy" value="desc">
@@ -141,7 +141,7 @@
             </div>
             
             
-                <div><form action="/home" method="get"><button><u>Show All</u></button></form></div>
+                <div class="mt-10"><form action="/home" method="get"><button><u>Show All</u></button></form></div>
 
                 <form action="/home" method="post" class="mt-10 px-4 py-2 w-[24rem] border-[1px] border-black rounded-[5px]">
                     @csrf

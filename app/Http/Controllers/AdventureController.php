@@ -35,7 +35,7 @@ class AdventureController extends Controller
 
         if ($request->isMethod('get')) {
             $destinationId = $request->input('destinationId');
-            $orderDirection = $request->input('orderBy', 'desc'); // Default to desc
+            $orderDirection = $request->input('orderBy', 'desc'); 
 
             $cacheKey = 'adventures_' . $destinationId . '_' . $orderDirection;
             $aventures = Cache::remember($cacheKey, 60, function () use ($destinationId, $orderDirection) {

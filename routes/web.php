@@ -52,7 +52,6 @@ Route::post('/logout', [UserController::class,'logout']);
 Route::post('/login', [UserController::class,'login']);
 Route::post('/posts', [AdventureController::class, 'store']);
 Route::get('/profile', [AdventureController::class, 'getUserAventures'])->name('profile');
-// Use separate routes for 'get' and 'post' methods
 Route::post('/home', [AdventureController::class, 'showAdventure'])->name('home.post');
 Route::get('/home', [AdventureController::class, 'showAdventure'])->name('home.get');
 
